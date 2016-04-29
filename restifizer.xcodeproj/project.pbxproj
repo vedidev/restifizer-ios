@@ -7,8 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2B0A7AD51CD15B6C003F3E48 /* restifizer.h in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2B0A7AD41CD15B6C003F3E48 /* restifizer.h */; };
-		2B0A7AD71CD15B6C003F3E48 /* restifizer.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B0A7AD61CD15B6C003F3E48 /* restifizer.m */; };
+		119617501CD3DE6100EBF509 /* RestifizerResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 119617461CD3DE6100EBF509 /* RestifizerResponse.m */; };
+		119617511CD3DE6100EBF509 /* RestifizerRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 119617481CD3DE6100EBF509 /* RestifizerRequest.m */; };
+		119617521CD3DE6100EBF509 /* RestifizerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 1196174A1CD3DE6100EBF509 /* RestifizerManager.m */; };
+		119617531CD3DE6100EBF509 /* RestifizerError.m in Sources */ = {isa = PBXBuildFile; fileRef = 1196174C1CD3DE6100EBF509 /* RestifizerError.m */; };
+		119617541CD3DE6100EBF509 /* RestifizerAuthParams.m in Sources */ = {isa = PBXBuildFile; fileRef = 1196174E1CD3DE6100EBF509 /* RestifizerAuthParams.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -18,16 +21,23 @@
 			dstPath = "include/$(PRODUCT_NAME)";
 			dstSubfolderSpec = 16;
 			files = (
-				2B0A7AD51CD15B6C003F3E48 /* restifizer.h in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		119617461CD3DE6100EBF509 /* RestifizerResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestifizerResponse.m; sourceTree = "<group>"; };
+		119617471CD3DE6100EBF509 /* RestifizerResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestifizerResponse.h; sourceTree = "<group>"; };
+		119617481CD3DE6100EBF509 /* RestifizerRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestifizerRequest.m; sourceTree = "<group>"; };
+		119617491CD3DE6100EBF509 /* RestifizerRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestifizerRequest.h; sourceTree = "<group>"; };
+		1196174A1CD3DE6100EBF509 /* RestifizerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestifizerManager.m; sourceTree = "<group>"; };
+		1196174B1CD3DE6100EBF509 /* RestifizerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestifizerManager.h; sourceTree = "<group>"; };
+		1196174C1CD3DE6100EBF509 /* RestifizerError.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestifizerError.m; sourceTree = "<group>"; };
+		1196174D1CD3DE6100EBF509 /* RestifizerError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestifizerError.h; sourceTree = "<group>"; };
+		1196174E1CD3DE6100EBF509 /* RestifizerAuthParams.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RestifizerAuthParams.m; sourceTree = "<group>"; };
+		1196174F1CD3DE6100EBF509 /* RestifizerAuthParams.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RestifizerAuthParams.h; sourceTree = "<group>"; };
 		2B0A7AD11CD15B6C003F3E48 /* librestifizer.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = librestifizer.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		2B0A7AD41CD15B6C003F3E48 /* restifizer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = restifizer.h; sourceTree = "<group>"; };
-		2B0A7AD61CD15B6C003F3E48 /* restifizer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = restifizer.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,8 +70,16 @@
 		2B0A7AD31CD15B6C003F3E48 /* restifizer */ = {
 			isa = PBXGroup;
 			children = (
-				2B0A7AD41CD15B6C003F3E48 /* restifizer.h */,
-				2B0A7AD61CD15B6C003F3E48 /* restifizer.m */,
+				119617461CD3DE6100EBF509 /* RestifizerResponse.m */,
+				119617471CD3DE6100EBF509 /* RestifizerResponse.h */,
+				119617481CD3DE6100EBF509 /* RestifizerRequest.m */,
+				119617491CD3DE6100EBF509 /* RestifizerRequest.h */,
+				1196174A1CD3DE6100EBF509 /* RestifizerManager.m */,
+				1196174B1CD3DE6100EBF509 /* RestifizerManager.h */,
+				1196174C1CD3DE6100EBF509 /* RestifizerError.m */,
+				1196174D1CD3DE6100EBF509 /* RestifizerError.h */,
+				1196174E1CD3DE6100EBF509 /* RestifizerAuthParams.m */,
+				1196174F1CD3DE6100EBF509 /* RestifizerAuthParams.h */,
 			);
 			path = restifizer;
 			sourceTree = "<group>";
@@ -122,7 +140,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2B0A7AD71CD15B6C003F3E48 /* restifizer.m in Sources */,
+				119617511CD3DE6100EBF509 /* RestifizerRequest.m in Sources */,
+				119617531CD3DE6100EBF509 /* RestifizerError.m in Sources */,
+				119617521CD3DE6100EBF509 /* RestifizerManager.m in Sources */,
+				119617501CD3DE6100EBF509 /* RestifizerResponse.m in Sources */,
+				119617541CD3DE6100EBF509 /* RestifizerAuthParams.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -248,6 +270,7 @@
 				2B0A7ADC1CD15B6C003F3E48 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
