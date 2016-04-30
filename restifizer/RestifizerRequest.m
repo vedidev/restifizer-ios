@@ -159,8 +159,8 @@ typedef enum : NSUInteger {
 }
 
 - (instancetype)one:(NSString *)objectId {
-#warning NEED TO CHECK HERE
-    self.path = [self.path stringByAppendingPathComponent:objectId];
+
+    self.path = [NSString stringWithFormat:@"%@/%@",self.path, objectId];
     self.fetchList = NO;
     
     return self;
@@ -238,13 +238,19 @@ typedef enum : NSUInteger {
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
     if ((self.statusCode / 100) != 2) {
-        
-        RestifizerResponse *response = [[RestifizerResponse alloc] initWithRequest:self withData:self.contentData andError:nil];
+        NSError *error;
+        NSObject *json = [NSJSONSerialization JSONObjectWithData:self.contentData options:0 error:&error];
+        RestifizerError *restifizerError;
+        if (error) {
+            NSLog(@"%@", error);
+            restifizerError = [[RestifizerError alloc] initWithError:error andStatusCode:self.statusCode];
+        }
+        RestifizerResponse *response = [[RestifizerResponse alloc] initWithRequest:self withContent:json andError:restifizerError];
         self.completion(response);
     } else {
         // Error
         RestifizerError *error = [[RestifizerError alloc] initWithError:nil andStatusCode:self.statusCode];
-        RestifizerResponse *response = [[RestifizerResponse alloc] initWithRequest:self withData:nil andError:error];
+        RestifizerResponse *response = [[RestifizerResponse alloc] initWithRequest:self withContent:nil andError:error];
         self.completion(response);
     }
 }
@@ -254,7 +260,7 @@ typedef enum : NSUInteger {
         NSLog(@"%@", error);
     }
     RestifizerError *restError =[[RestifizerError alloc] initWithError:error andStatusCode:self.statusCode];
-    RestifizerResponse *response = [[RestifizerResponse alloc] initWithRequest:self withData:nil andError:restError];
+    RestifizerResponse *response = [[RestifizerResponse alloc] initWithRequest:self withContent:nil andError:restError];
     self.completion(response);
 }
 

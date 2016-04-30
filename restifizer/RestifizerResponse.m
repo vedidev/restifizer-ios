@@ -10,9 +10,9 @@
 
 @implementation RestifizerResponse
 
-- (instancetype)initWithRequest:(RestifizerRequest*)request withData:(NSData*)data andError:(RestifizerError*)error {
+- (instancetype)initWithRequest:(RestifizerRequest *)request withContent:(NSObject*)responseContent andError:(RestifizerError*)error {
     if (self = [super init]) {
-        self.contentData = data;
+        self.responseContent = responseContent;
         self.error = error;
         self.request = request;
     }
