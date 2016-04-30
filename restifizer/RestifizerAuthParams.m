@@ -29,7 +29,7 @@
 
 - (NSString *)encodedBasicAuth {
     if (self.clientId != nil && self.clientSecret != nil) {
-        NSData *stringData = [[self.clientId stringByAppendingString:self.clientSecret] dataUsingEncoding:NSUTF8StringEncoding];
+        NSData *stringData = [[NSString stringWithFormat:@"%@:%@", self.clientId, self.clientSecret] dataUsingEncoding:NSUTF8StringEncoding];
         NSString *base64 = [stringData base64EncodedStringWithOptions:0];
         return base64;
     } else {

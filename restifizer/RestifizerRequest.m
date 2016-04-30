@@ -127,13 +127,11 @@ typedef enum : NSUInteger {
     NSString *authString;
     switch(self.authType) {
         case AuthTypeClient:
-            authString = @"Basic ";
-            authString = [authString stringByAppendingString:self.authParams.encodedBasicAuth];
+            authString = [NSString stringWithFormat:@"Basic %@", self.authParams.encodedBasicAuth];
             [self.urlRequest setValue:authString forHTTPHeaderField:@"Authorization"];
             break;
         case AuthTypeBearer:
-            authString = @"Bearer ";
-            authString = [authString stringByAppendingString:self.authParams.accessToken];
+            authString = [NSString stringWithFormat:@"Bearer %@", self.authParams.accessToken];
             [self.urlRequest setValue:authString forHTTPHeaderField:@"Authorization"];
             break;
         default:
@@ -213,7 +211,7 @@ typedef enum : NSUInteger {
     }
     
     if (quoted) {
-        NSString *quotedValue = [[@"/" stringByAppendingString:value] stringByAppendingString:@"/"];
+        NSString *quotedValue = [NSString stringWithFormat:@"/%@/", value];
         self.filterParameters[key] = quotedValue;
     } else {
         self.filterParameters[key] = value;

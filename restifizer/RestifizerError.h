@@ -12,4 +12,8 @@
 
 - (instancetype)initWithError:(NSError*)error andStatusCode:(NSInteger)code;
 
+- (NSString*)errorDescription;
+
+- (NSInteger)statusCode;
+
 @end
