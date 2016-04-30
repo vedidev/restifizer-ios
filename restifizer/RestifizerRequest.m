@@ -46,8 +46,9 @@ typedef enum : NSUInteger {
 @property (nonatomic, strong) NSMutableData *contentData;
 @property (nonatomic) UInt16 statusCode;
 
-@property (nonatomic, strong) NSDictionary *authTypeNames;
 @end
+
+static NSDictionary *authTypeNames;
 
 @implementation RestifizerRequest
 
@@ -56,11 +57,15 @@ typedef enum : NSUInteger {
         self.authParams = params;
         self.path = path;
         
-        self.authTypeNames = @{@(RequestTypeGet):@"GET",
-                               @(RequestTypeDelete):@"DELETE",
-                               @(RequestTypePatch):@"PATCH",
-                               @(RequestTypePut):@"PUT",
-                               @(RequestTypePost):@"POST"};
+        // Set static dictionary
+        static dispatch_once_t onceToken;
+        dispatch_once(&onceToken, ^{
+            authTypeNames = @{@(RequestTypeGet):@"GET",
+                              @(RequestTypeDelete):@"DELETE",
+                              @(RequestTypePatch):@"PATCH",
+                              @(RequestTypePut):@"PUT",
+                              @(RequestTypePost):@"POST"};
+        });
     }
     return self;
 }
@@ -121,7 +126,7 @@ typedef enum : NSUInteger {
     self.urlRequest = [[NSMutableURLRequest alloc]initWithURL:[NSURL URLWithString:self.path]];
     
     // Method
-    self.urlRequest.HTTPMethod = self.authTypeNames[@(self.requestType)];
+    self.urlRequest.HTTPMethod = authTypeNames[@(self.requestType)];
     
     // Authorization
     NSString *authString;
