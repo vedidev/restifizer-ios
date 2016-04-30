@@ -13,6 +13,10 @@
 
 @interface RestifizerResponse : NSObject
 
+@property (nonatomic, strong) NSData *contentData;
+@property (nonatomic, strong) RestifizerError *error;
+@property (nonatomic, strong) RestifizerRequest *request;
+
 - (instancetype)initWithRequest:(RestifizerRequest *)request withData:(NSData*)data andError:(RestifizerError*)error;
 
 @end

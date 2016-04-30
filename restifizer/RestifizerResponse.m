@@ -12,7 +12,9 @@
 
 - (instancetype)initWithRequest:(RestifizerRequest*)request withData:(NSData*)data andError:(RestifizerError*)error {
     if (self = [super init]) {
-        
+        self.contentData = data;
+        self.error = error;
+        self.request = request;
     }
     
     return self;
