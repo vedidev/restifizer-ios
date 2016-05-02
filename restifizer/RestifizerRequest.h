@@ -31,6 +31,10 @@ typedef void (^RestifizerCompletion)(RestifizerResponse*);
 
 - (instancetype)withBearerAuth;
 
+// Data Type
+
+- (instancetype)withStringParameters;
+
 // Supporting methods
 
 - (instancetype)withTag:(NSString*)tag;

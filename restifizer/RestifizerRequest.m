@@ -22,6 +22,11 @@ typedef enum : NSUInteger {
     RequestTypeDelete,
 } RequestType;
 
+typedef enum : NSUInteger {
+    ParamsContentTypeJSON,
+    ParamsContentTypeString
+} ParamsContentType;
+
 @interface RestifizerRequest() <NSURLConnectionDataDelegate>
 
 @property(nonatomic, strong) NSString *path;
@@ -29,6 +34,7 @@ typedef enum : NSUInteger {
 @property (nonatomic) RequestType requestType;
 @property (nonatomic) RestifizerAuthParams *authParams;
 @property (nonatomic, strong) RestifizerCompletion completion;
+@property (nonatomic) ParamsContentType paramsContentType;
 
 @property (nonatomic) BOOL fetchList;
 @property (nonatomic, strong) NSString *tag;
@@ -59,7 +65,9 @@ static NSDictionary *authTypeNames;
         
         self.pageSize = -1;
         self.pageNumber = -1;
+        self.contentData = [[NSMutableData alloc] init];
         
+        self.paramsContentType = ParamsContentTypeJSON;
         
         // Set static dictionary
         static dispatch_once_t onceToken;
@@ -83,6 +91,14 @@ static NSDictionary *authTypeNames;
 
 - (instancetype)withClientAuth {
     self.authType = AuthTypeClient;
+    return self;
+}
+
+#pragma mark - Data Type
+
+- (instancetype)withStringParameters {
+    self.paramsContentType = ParamsContentTypeString;
+    
     return self;
 }
 
@@ -187,12 +203,23 @@ static NSDictionary *authTypeNames;
     
     // Parameters
     NSError *error;
-    NSData *parametersData = [NSJSONSerialization dataWithJSONObject:self.parameters options:NSJSONWritingPrettyPrinted error:&error];
-    if (error) {
-        NSLog(@"%@", error);
-        return;
+    if (self.parameters != nil) {
+        NSData *parametersData = nil;
+        switch (self.paramsContentType) {
+            case ParamsContentTypeString:
+                parametersData = [self generateParamsStringFromDictionary:self.parameters];
+                break;
+            case ParamsContentTypeJSON:
+                parametersData = [NSJSONSerialization dataWithJSONObject:self.parameters options:NSJSONWritingPrettyPrinted error:&error];
+                if (error) {
+                    NSLog(@"%@", error);
+                    return;
+                }
+                break;
+        }
+        
+        self.urlRequest.HTTPBody = parametersData;
     }
-    self.urlRequest.HTTPBody = parametersData;
 
     self.connection = [[NSURLConnection alloc] initWithRequest:self.urlRequest delegate:self startImmediately:true];
 }
@@ -284,7 +311,7 @@ static NSDictionary *authTypeNames;
 }
 
 - (void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    if ((self.statusCode / 100) != 2) {
+    if ((self.statusCode / 100) == 2) {
         NSError *error;
         NSObject *json = [NSJSONSerialization JSONObjectWithData:self.contentData options:0 error:&error];
         RestifizerError *restifizerError;
@@ -309,6 +336,23 @@ static NSDictionary *authTypeNames;
     RestifizerError *restError =[[RestifizerError alloc] initWithError:error andStatusCode:self.statusCode];
     RestifizerResponse *response = [[RestifizerResponse alloc] initWithRequest:self withContent:nil andError:restError];
     self.completion(response);
+}
+
+#pragma mark - Utils
+
+- (NSData *)generateParamsStringFromDictionary:(NSDictionary *)params
+{
+    NSString *resultString = @"";
+    if (!params)
+        return nil;
+    for (NSString *key in [params allKeys])
+    {
+        resultString = [NSString stringWithFormat:@"%@%@=%@&",resultString, key, params[key]];
+    }
+    resultString = [resultString substringToIndex:resultString.length - 1];
+    
+    resultString = CFBridgingRelease(CFURLCreateStringByAddingPercentEscapes(NULL, (__bridge CFStringRef)resultString, NULL, (__bridge CFStringRef)@"!*'\"();:@+$,/?%#[]% ", CFStringConvertNSStringEncodingToEncoding(NSUTF8StringEncoding)));
+    return [NSData dataWithBytes:[resultString UTF8String] length:[resultString length]];
 }
 
 @end
