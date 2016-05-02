@@ -57,6 +57,10 @@ static NSDictionary *authTypeNames;
         self.authParams = params;
         self.path = path;
         
+        self.pageSize = -1;
+        self.pageNumber = -1;
+        
+        
         // Set static dictionary
         static dispatch_once_t onceToken;
         dispatch_once(&onceToken, ^{
@@ -127,6 +131,44 @@ static NSDictionary *authTypeNames;
     
     // Method
     self.urlRequest.HTTPMethod = authTypeNames[@(self.requestType)];
+    
+    // Extra params
+    NSMutableArray *paramsArray = [[NSMutableArray alloc] init];
+    
+    if (self.pageNumber != -1) {
+        [paramsArray addObject:[NSString stringWithFormat:@"page=%ld", (long)self.pageNumber]];
+    }
+    
+    if (self.pageSize != -1) {
+        [paramsArray addObject:[NSString stringWithFormat:@"per_page=%ld", (long)self.pageSize]];
+    }
+    
+    if (self.filterParameters != nil && self.filterParameters.count > 0) {
+        NSString *combined = @"";
+        for (NSString *key in self.filterParameters) {
+            combined = [NSString stringWithFormat:@"%@\"%@\": %@,", combined, key, self.filterParameters[key]];
+        }
+        NSRange lastComma = [combined rangeOfString:@"," options:NSBackwardsSearch];
+        combined = [combined substringToIndex:lastComma.location];
+        
+        NSString *filterString = [NSString stringWithFormat:@"{%@}", combined];
+        NSString *urlString = [filterString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+        [paramsArray addObject:[NSString stringWithFormat:@"filter=%@", urlString]];
+    }
+    
+    if (self.extraQuery != nil && self.extraQuery.count > 0) {
+        NSString *combined = @"";
+        for (NSString *key in self.extraQuery) {
+            combined = [NSString stringWithFormat:@"%@%@=%@", combined, key, self.extraQuery[key]];
+        }
+        [paramsArray addObject:combined];
+    }
+    
+    if (paramsArray.count > 0) {
+        NSString *params = [paramsArray componentsJoinedByString:@"&"];
+        self.path = [NSString stringWithFormat:@"%@?%@", self.path, params];
+        NSLog(@"Query url: %@", self.path);
+    }
     
     // Authorization
     NSString *authString;
